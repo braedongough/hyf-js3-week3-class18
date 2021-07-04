@@ -11,6 +11,24 @@ class Job {
         this.startDate = new Date(startDate)
         this.endDate = new Date(endDate)
     }
+
+    render(parentDomNode) {
+        const jobContent = document.createElement('div')
+
+        const jobTitle = document.createElement('h3')
+        jobTitle.innerHTML = this.title
+        jobContent.appendChild(jobTitle)
+
+        const jobDescription = document.createElement('p')
+        jobDescription.innerHTML = this.description
+        jobContent.appendChild(jobDescription)
+
+        const dates = document.createElement('p')
+        dates.innerHTML = `${this.startDate.toDateString()} - ${this.endDate.toDateString()}`
+        jobContent.appendChild(dates)
+
+        parentDomNode.appendChild(jobContent)
+    }
 }
 
 class Education {
@@ -40,31 +58,117 @@ class CV {
         this.jobs = updatedJobs
     }
 
+    viewJobs() {
+        console.log(this.jobs)
+    }
+
     addEducation(education) {
         this.educations.push(education)
     }
 
     removeEducation(education) {
         const updatedEducations = this.educations.filter(
-            // (it) => education.id !== it.id
-            (it) => _.isEqual(education, it)
+            (it) => education.id !== it.id
         )
         this.educations = updatedEducations
+    }
+
+    viewEducations() {
+        console.log(this.educations)
+    }
+
+    renderJobs(parentDomNode) {
+        const jobsTitle = document.createElement('h2')
+        jobsTitle.innerHTML = 'Jobs'
+        parentDomNode.appendChild(jobsTitle)
+
+        const jobsUl = document.createElement('ul')
+        cvContent.appendChild(jobs)
+        this.jobs.forEach((job) => {
+            const jobLi = document.createElement('li')
+            jobsUl.appendChild(jobLi)
+            job.render(jobLi)
+        })
+    }
+
+    renderCV() {
+        const cvContent = document.createElement('div')
+        document.body.appendChild(cvContent)
+
+        const cvTitle = document.createElement('h1')
+        cvTitle.innerHTML = `Email: ${this.email}`
+        cvContent.appendChild(cvTitle)
+
+        this.renderJobs(cvContent)
+
+        const educationsTitle = document.createElement('h2')
+        educationsTitle.innerHTML = 'Education'
+        cvContent.appendChild(educationsTitle)
+
+        const educations = document.createElement('ul')
+        cvContent.appendChild(educations)
     }
 }
 
 const edu1 = new Education(
+    'High School',
+    'AN Myer',
+    'Niagara falls',
+    '2013-02-03',
+    '2018-01-01'
+)
+
+const edu2 = new Education(
     'Undergrad',
     'Brock University',
-    '123 Niagara falls',
-    '2021-02-03',
+    'St Catharines',
+    '2018-02-03',
+    '2020-01-01'
+)
+
+const edu3 = new Education(
+    'Masters',
+    'CBS',
+    'Copenhagen',
+    '2020-02-03',
     '2022-01-01'
 )
 
-const cv = new CV('br@email.com')
+const job1 = new Job(
+    'Cook',
+    'Making burritos and running a restaurant.',
+    '2016-03-14',
+    '2017-03-14'
+)
 
-cv.addEducation(edu1)
+const job2 = new Job(
+    'Account Manager',
+    'Selling software to companies that need software.',
+    '2017-03-14',
+    '2018-03-14'
+)
 
-console.log(cv.educations)
-cv.removeEducation(edu1)
-console.log(cv.educations)
+const job3 = new Job(
+    'Software developer',
+    'Building very important web apps for the world.',
+    '2018-03-14',
+    'Present'
+)
+
+const cv = new CV('braedon@email.com')
+
+// cv.addEducation(edu1)
+// cv.addEducation(edu2)
+// cv.addEducation(edu3)
+
+// cv.viewEducations()
+
+cv.addJob(job1)
+cv.addJob(job2)
+cv.addJob(job3)
+
+// cv.viewJobs()
+
+// cv.removeEducation(edu2)
+// cv.viewEducations()
+cv.renderCV()
