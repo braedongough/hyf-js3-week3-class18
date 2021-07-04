@@ -43,9 +43,13 @@ class Education {
 }
 
 class CV {
-    constructor(email) {
+    constructor() {
         this.jobs = []
         this.educations = []
+        this.email = ''
+    }
+
+    addEmail(email) {
         this.email = email
     }
 
@@ -77,13 +81,13 @@ class CV {
         console.log(this.educations)
     }
 
-    renderJobs(parentDomNode) {
+    #renderJobs(parentDomNode) {
         const jobsTitle = document.createElement('h2')
         jobsTitle.innerHTML = 'Jobs'
         parentDomNode.appendChild(jobsTitle)
 
         const jobsUl = document.createElement('ul')
-        cvContent.appendChild(jobs)
+        parentDomNode.appendChild(jobsUl)
         this.jobs.forEach((job) => {
             const jobLi = document.createElement('li')
             jobsUl.appendChild(jobLi)
@@ -99,7 +103,7 @@ class CV {
         cvTitle.innerHTML = `Email: ${this.email}`
         cvContent.appendChild(cvTitle)
 
-        this.renderJobs(cvContent)
+        this.#renderJobs(cvContent)
 
         const educationsTitle = document.createElement('h2')
         educationsTitle.innerHTML = 'Education'
@@ -155,8 +159,9 @@ const job3 = new Job(
     'Present'
 )
 
-const cv = new CV('braedon@email.com')
+const cv = new CV()
 
+cv.addEmail('braedon@email.com')
 // cv.addEducation(edu1)
 // cv.addEducation(edu2)
 // cv.addEducation(edu3)
@@ -172,3 +177,4 @@ cv.addJob(job3)
 // cv.removeEducation(edu2)
 // cv.viewEducations()
 cv.renderCV()
+cv.renderJobs()
